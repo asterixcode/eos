@@ -1,0 +1,6 @@
+#! /bin/bash
+trap 'echo PROGRAM INTERRUPTED ; exit 1' 2
+while true
+do
+  echo "Program running!"
+done

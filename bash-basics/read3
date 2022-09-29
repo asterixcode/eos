@@ -1,0 +1,5 @@
+echo -n "Enter something: "
+read word1 word2 word3
+echo "$word1"
+echo "$word2"
+echo "$word3"

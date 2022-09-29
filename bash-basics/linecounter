@@ -1,0 +1,2 @@
+linecount=$(wc -l $1 | cut -f1 -d' ')
+echo "The file has $linecount lines"

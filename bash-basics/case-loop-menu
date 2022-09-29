@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo -e "\n      COMMAND MENU\n"
+echo " a.  Current Date and Time"
+echo " b.  Users Currently logged in"
+echo " c.  Name of the working dir"
+echo -e " d.  Contents of working dir.\n"
+echo -e "Enter a, b, c or d: \c"
+read answer
+echo
+case "$answer" in
+	a|A)
+	  date
+	  ;;
+	b|B)
+	  who
+	  ;;
+	c|C)
+	  pwd
+	  ;;
+	d|D)
+	  ls
+	  ;;
+	*)
+	  echo "There is no: $answer"
+	  ;;
+esac

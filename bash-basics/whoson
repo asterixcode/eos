@@ -1,0 +1,5 @@
+#!/bin/bash
+#This script will show the users currently logged in
+date
+echo Users Currently Logged In
+who

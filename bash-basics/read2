@@ -1,0 +1,4 @@
+echo -n "Enter a command: "
+read command
+$command
+echo Thanks

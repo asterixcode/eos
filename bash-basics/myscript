@@ -1,0 +1,4 @@
+person=Jenny
+echo "myscript 1: $person"
+. ./subscript
+echo "myscript 2: $person"

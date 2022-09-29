@@ -1,0 +1,6 @@
+echo The name and path of the script is:
+echo $0
+echo The script name is:
+echo $(basename $0) #Using command substitution
+echo The first 5 arguments are:
+echo $1 $2 $3 $4 $5

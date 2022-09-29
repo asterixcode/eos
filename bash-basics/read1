@@ -1,0 +1,3 @@
+echo -n "Go ahead: "
+read firstline
+echo "You entered: $firstline"

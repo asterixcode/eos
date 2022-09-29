@@ -1,0 +1,3 @@
+echo "subscript 1: $person"
+person=Helen
+echo "subscript 2: $person"
