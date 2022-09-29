@@ -1,0 +1,10 @@
+#!/bin/bash
+
+cd /sys/class/leds/beaglebone:green:usr0
+
+sudo chmod o+w trigger
+echo timer > trigger
+
+sudo chmod o+w delay_on delay_off
+echo 250 > delay_on
+echo 250 > delay_off

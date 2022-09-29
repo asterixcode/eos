@@ -1,0 +1,3 @@
+#!/bin/bash
+cd /sys/class/leds/beaglebone:green:usr0
+echo heartbeat > trigger
