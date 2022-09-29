@@ -1,0 +1,203 @@
+#########################################################
+# Author: Lucas Krause Saldanha - 300709
+# Embedded Operating Systems @ VIA University College
+# Assignment 1
+# Shell programming, bash, Beagle Bone Black (BBB) LEDs
+#########################################################
+#!/bin/bash
+
+bold=$(tput bold)
+italic=$(tput smul)
+normal=$(tput sgr0)
+leds=("led0 led1 led2 led3 all")
+modes=("on off heartbeat blink default")
+
+# --help
+if [[ "$1" == "--help" ]]
+    then
+        echo
+        echo "Usage: ${bold}$0${normal} ${italic}led${normal} ${italic}mode${normal} ${italic}[Hz]${normal}"
+        echo
+        echo "${bold}DESCRIPTION${normal}"
+        echo " ${bold}$0${normal} helps you control the 4 LEDs on the Beagle Bone Black."
+        echo " - The first argument selects the led, which may be set to either: ${bold}${leds}${normal}"
+        echo " - The second argument defines the mode, which may be set to either: ${bold}${modes}${normal}"
+        echo " - If blink mode is selected, then the third argument accepts a number for the frequency in Hz"
+        echo
+        exit 1
+fi
+
+# if no arguments
+if [ $# -eq 0 ]
+    then
+        echo "Try '$0 --help' for more information."
+        exit 1
+fi
+
+# check 1st and 2nd argument
+check_argument () {
+    LIST=$1
+    DELIMITER=$2
+    VALUE=$3
+    LIST_WHITESPACES=`echo $LIST | tr "$DELIMITER" " "`
+    for x in $LIST_WHITESPACES; do
+        if [ "$x" = "$VALUE" ]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+check_argument "$LIST" "$DELIMINTER" "$ELEMENT"
+
+if ! check_argument "$leds" " " $1;
+    then
+        echo "$0: unrecognized option '$1'"
+        echo "Try '$0 --help' for more information."
+        exit 1
+fi
+if ! check_argument "$modes" " " $2;
+    then
+        echo "$0: unrecognized option '$2'"
+        echo "Try '$0 --help' for more information."
+        exit 1
+fi
+
+# on_off $1 $2
+# $1: led number
+# $2: 0=off, 1=on
+on_off ()
+{
+    cd /sys/class/leds/beaglebone:green:usr$1
+
+    sudo chmod o+w brightness trigger
+    echo none > trigger
+    echo $2 > brightness
+
+}
+
+# heartbeat $1
+# $1: led number
+heartbeat ()
+{
+    cd /sys/class/leds/beaglebone:green:usr$1
+
+    sudo chmod o+w brightness trigger
+    echo heartbeat > trigger
+}
+
+# blink $1 $2
+# $1: led number
+# $2: Hz
+blink ()
+{
+    delay=$(((1000/$2)/2))
+    cd /sys/class/leds/beaglebone:green:usr$1
+    sudo chmod o+w trigger
+    echo timer > trigger
+    sudo chmod o+w delay_on delay_off
+    echo $delay > delay_on
+    echo $delay > delay_off
+}
+
+# default $1
+# $1: led number
+default ()
+{
+    if (( "$1" == 0 ))
+    then
+        cd /sys/class/leds/beaglebone:green:usr0
+        echo heartbeat > trigger
+    fi
+    if (( "$1" == 1 ))
+    then
+        cd /sys/class/leds/beaglebone:green:usr1
+        echo mmc0 > trigger
+        echo 0 > brightness
+    fi
+    if (( "$1" == 2 ))
+    then
+        cd /sys/class/leds/beaglebone:green:usr2
+        echo cpu0 > trigger
+        echo 255 > brightness
+    fi
+    if (( "$1" == 3 ))
+    then
+        cd /sys/class/leds/beaglebone:green:usr3
+        echo mmc1 > trigger
+        echo 0 > brightness
+    fi
+}
+
+
+# all
+if [ "$1" == "all" ]
+    then
+    if [ "$2" == "on" ]
+        then
+        on_off 0 1
+        on_off 1 1
+        on_off 2 1
+        on_off 3 1
+    fi
+    if [ "$2" == "off" ]
+        then
+        on_off 0 0
+        on_off 1 0
+        on_off 2 0
+        on_off 3 0
+    fi
+    if [ "$2" == "heartbeat" ]
+        then 
+        heartbeat 0
+        heartbeat 1
+        heartbeat 2
+        heartbeat 3
+    fi
+    if [ "$2" == "blink" ]
+        then
+        if [ $3 -gt 0 ]
+            then
+            blink 0 $3
+            blink 1 $3
+            blink 2 $3
+            blink 3 $3
+        fi
+    fi
+    if [ "$2" == "default" ]
+        then
+        default 0
+        default 1
+        default 2
+        default 3
+    fi 
+fi
+
+
+# led*
+led_number=$(echo $1 | cut -c 4-)
+verify_led=$(echo $1 | cut -c -3)
+
+if [ "$verify_led" == "led" ]
+    then
+    if [ "$2" == "on" ]
+        then
+        on_off $led_number 1
+    fi
+    if [ "$2" == "off" ]
+        then
+        on_off $led_number 0
+    fi
+    if [ "$2" == "heartbeat" ]
+        then
+        heartbeat $led_number
+    fi
+    if [ "$2" == "blink" ]
+        then
+        blink $led_number $3
+    fi
+    if [ "$2" == "default" ]
+        then
+        default $led_number
+    fi
+fi
