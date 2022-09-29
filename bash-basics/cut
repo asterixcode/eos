@@ -1,0 +1,2 @@
+led_number=$(echo $1 | cut -c 4-)
+echo $led_number

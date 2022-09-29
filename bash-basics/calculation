@@ -1,0 +1,2 @@
+delay=$((1000/$1/2))
+echo $delay
