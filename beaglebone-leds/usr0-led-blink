@@ -1,0 +1,11 @@
+#!/bin/bash
+
+delay=$((1000/$1/2))
+cd /sys/class/leds/beaglebone:green:usr0
+
+sudo chmod o+w trigger
+echo timer > trigger
+
+sudo chmod o+w delay_on delay_off
+echo $delay > delay_on
+echo $delay > delay_off
