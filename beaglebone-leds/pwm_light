@@ -1,0 +1,20 @@
+######################################################################
+# Author: Lucas Krause Saldanha - 300709
+# Embedded Operating Systems @ VIA University College
+# Assignment 2
+# Shell programming, bash, Beagle Bone Black (BBB) LEDs PWM intensity
+######################################################################
+#!/bin/bash
+
+pwm_light () # $arg1 = pwd %
+{
+    config-pin P9_21 pwm
+    sh -c "echo 1 > export"
+    time=$((200000 * $1))
+    cd /sys/class/pwm/pwmchip1/pwm-1:1/
+    sh -c "echo 20000000 > period"
+    sh -c "echo ${time} > duty_cycle"
+    sh -c "echo 1 > enable"
+}
+
+pwm_light $1
