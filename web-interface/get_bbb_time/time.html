@@ -4,8 +4,8 @@
     <title>IoT sensor with BeagleBone</title>
     <script src = "/socket.io/socket.io.js" ></script>
     <script>
-        // Establishing connection with server
-        var socket = io.connect(); /* global io */
+		// Establishing connection with server
+    var socket = io.connect(); /* global io */
 		var updateInterval;
 
 		// Update when data received on socket
@@ -16,16 +16,15 @@
 		});	
 
 		// Set update interval
-	   function update() {
+	  function update() {
 			updateInterval = setInterval(getValues, 1000);
 		}
 
-        // Request sensor data
-        function getValues(){
+		// Request sensor data
+		function getValues(){
 			// Emit message to get data
 			socket.emit('fetchTime');
-       }
-
+		}
     </script>
 </head>
 <body onload="update()">
