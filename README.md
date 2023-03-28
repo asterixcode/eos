@@ -1,3 +1,3 @@
-# EOS - Embedded Opereting Systems
+# EOS - Embedded Operating Systems
 
-Repository for my scripts, notes and assignments for EOS course @ VIA University College
+Repository for my scripts and exercises for EOS course @ VIA University College
